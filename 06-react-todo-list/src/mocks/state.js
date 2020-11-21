@@ -1,37 +1,48 @@
-import { v4 as uuid } from 'uuid';
+let listTasks = localStorage.getItem('listTasks');
 
-const state = [
-    {
-        id: uuid(),
-        name: 'BCD Lorem, ipsum dolor sit amet consectetur adipisicing elit.',
-        level: 0,
-    },
-    {
-        id: uuid(),
-        name: 'ABC Lorem, ipsum dolor sit amet consectetur adipisicing elit.',
-        level: 0,
-    },
+if (!listTasks) {
+    listTasks = [];
+} else {
+    try {
+        listTasks = JSON.parse(listTasks);
+    } catch (error) {
+        listTasks = [];
+        localStorage.setItem('listTasks', '[]');
+    }
+}
 
-    {
-        id: uuid(),
-        name: 'CEF Lorem, ipsum dolor sit amet consectetur adipisicing elit.',
-        level: 2,
-    },
-    {
-        id: uuid(),
-        name: 'DCF Lorem, ipsum dolor sit amet consectetur adipisicing elit.',
-        level: 0,
-    },
-    {
-        id: uuid(),
-        name: 'EGH Lorem, ipsum dolor sit amet consectetur adipisicing elit.',
-        level: 1,
-    },
-    {
-        id: uuid(),
-        name: 'FHM Lorem, ipsum dolor sit amet consectetur adipisicing elit.',
-        level: 1,
-    },
-];
+// const state = [
+//     {
+//         id: uuid(),
+//         name: 'BCD Lorem, ipsum dolor sit amet consectetur adipisicing elit.',
+//         level: 0,
+//     },
+//     {
+//         id: uuid(),
+//         name: 'ABC Lorem, ipsum dolor sit amet consectetur adipisicing elit.',
+//         level: 0,
+//     },
 
-export default state;
+//     {
+//         id: uuid(),
+//         name: 'CEF Lorem, ipsum dolor sit amet consectetur adipisicing elit.',
+//         level: 2,
+//     },
+//     {
+//         id: uuid(),
+//         name: 'DCF Lorem, ipsum dolor sit amet consectetur adipisicing elit.',
+//         level: 0,
+//     },
+//     {
+//         id: uuid(),
+//         name: 'EGH Lorem, ipsum dolor sit amet consectetur adipisicing elit.',
+//         level: 1,
+//     },
+//     {
+//         id: uuid(),
+//         name: 'FHM Lorem, ipsum dolor sit amet consectetur adipisicing elit.',
+//         level: 1,
+//     },
+// ];
+
+export default listTasks;

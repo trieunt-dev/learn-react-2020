@@ -11,10 +11,26 @@ const App = () => {
     const [orderDir, setOrderDir] = useState('asc');
     const [searchText, setSearchText] = useState('');
 
+    useMemo(() => {
+        localStorage.setItem('listTasks', JSON.stringify(listTasks));
+    }, [listTasks]);
+
     let handleDeleteTask = (taskDelete, callback) => {
-        let newListTask = listTasks.filter((task) => task.id !== taskDelete.id);
-        setListTasks(newListTask);
-        callback();
+        setTimeout(() => {
+            let newListTask = listTasks.filter(
+                (task) => task.id !== taskDelete.id
+            );
+            setListTasks(newListTask);
+            callback();
+        }, 2000);
+    };
+
+    let handleEditTask = (taskEdit) => {
+        let index = listTasks.findIndex((task) => taskEdit.id === task.id);
+        listTasks[index].name = taskEdit.name;
+        listTasks[index].level = taskEdit.level;
+
+        setListTasks([...listTasks]);
     };
 
     let onSelectSort = (orderBy, orderDir) => {
@@ -73,6 +89,7 @@ const App = () => {
             <ListTasks
                 listTasks={listTaskSearchAndSort}
                 handleDeleteTask={handleDeleteTask}
+                handleEditTask={handleEditTask}
             />
         </Container>
     );

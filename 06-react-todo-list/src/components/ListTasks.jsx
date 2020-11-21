@@ -2,23 +2,28 @@ import React, { useState, useEffect } from 'react';
 
 import ListTaskItem from './ListTaskItem';
 import Modal from './Modal';
+import Button from './Button';
 
-const ListTasks = ({ listTasks, handleDeleteTask }) => {
+const ListTasks = ({ listTasks, handleDeleteTask, handleEditTask }) => {
+    let [isLoading, setIsLoading] = useState(false);
     let [openModal, setOpenModal] = useState(false);
-    let [taskSelected, setTaskSelected] = useState(null);
+    let [taskDelete, setTaskDelete] = useState(null);
 
     useEffect(() => {
-        if (taskSelected) {
+        if (taskDelete) {
             setOpenModal(true);
         } else {
             setOpenModal(false);
         }
-    }, [taskSelected]);
+    }, [taskDelete]);
 
     let handleSubmit = () => {
-        handleDeleteTask(taskSelected, () => {
+        if (isLoading) return;
+        setIsLoading(true);
+        handleDeleteTask(taskDelete, () => {
+            setIsLoading(false);
+            setTaskDelete(null);
             setOpenModal(false);
-            setTaskSelected(null);
         });
     };
 
@@ -35,7 +40,7 @@ const ListTasks = ({ listTasks, handleDeleteTask }) => {
                         <th style={{ width: '20%' }} className="text-center">
                             Level
                         </th>
-                        <th style={{ width: '160px' }}>Action</th>
+                        <th style={{ width: '200px' }}>Action</th>
                     </tr>
                 </thead>
 
@@ -49,7 +54,8 @@ const ListTasks = ({ listTasks, handleDeleteTask }) => {
                                     task={task}
                                     index={index}
                                     setOpenModal={setOpenModal}
-                                    setTaskSelected={setTaskSelected}
+                                    setTaskDelete={setTaskDelete}
+                                    handleEditTask={handleEditTask}
                                 />
                             );
                         })}
@@ -62,18 +68,26 @@ const ListTasks = ({ listTasks, handleDeleteTask }) => {
                 modalFooter={() => {
                     return (
                         <>
-                            <button
+                            <Button
+                                loading={isLoading}
                                 onClick={() => handleSubmit()}
                                 className="btn-primary btn-modal btn-modal-add"
                             >
                                 Xóa
-                            </button>
+                            </Button>
                             <button
-                                onClick={() => setTaskSelected(null)}
+                                onClick={() => setTaskDelete(null)}
                                 className="btn-secondary btn-modal-cancel btn-modal"
                             >
                                 Hủy
                             </button>
+                            {/* <Button
+                                className="btn-primary btn-modal btn-modal-add"
+                                loading={isLoading}
+                                onClick={() => setIsLoading(!isLoading)}
+                            >
+                                Cancel
+                            </Button> */}
                         </>
                     );
                 }}
